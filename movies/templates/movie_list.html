@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Películas</title>
+</head>
+<body>
+  <h1>Lista de Películas</h1>
+    <ul>
+       {% for movie in movies %}
+            <li>
+                <strong>{{ movie.title }}</strong> - Dirigida por {{ movie.director }} - Fecha de lanzamiento: {{ movie.release_date }}
+                <p>{{ movie.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
