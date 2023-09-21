@@ -1,17 +1,55 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="esp">
 <head>
-    <title>Lista de Películas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cero Ficcion</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Lista de Películas</h1>
-    <ul>
-       {% for movie in movies %}
-            <li>
-                <strong>{{ movie.title }}</strong> - Dirigida por {{ movie.director }} - Fecha de lanzamiento: {{ movie.release_date }}
-                <p>{{ movie.description }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+<body>   
+   <div class="bg-white shadow-md p-4">
+        <h1 class="text-3xl font-bold text-indigo-700">Bienvenido a Cero Ficcion</h1>
+        <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 mt-4 rounded-full inline-block">Iniciar sesión</a>
+    </div>
+
+    <div class="mt-8 p-4 grid grid-cols-2 gap-4">
+        <div class="bg-yellow-200 p-4 rounded-lg">
+            <h2 class="text-lg font-semibold text-yellow-800">Bibliteca de peliculas
+            </h2>
+            
+<h1 class="mt-2 text-gray-600">Lista de Películas</h1>
+    
+  <table class="table table-success table-striped">
+    <thead>
+      <tr>
+        <th>Titulo </th>
+        <th>Director </th>
+        <th>Fecha de Lanzamiento </th>
+        <th>Descripción </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for movie in movies %}
+        <tr>
+          <td>{{ movie.title }}</td>
+          <td>{{ movie.director }}</td>
+          <td>{{ movie.release_date }}</td>
+          <td>{{ movie.description }}</td>
+        </tr>
+        {%empty%}
+        <p>No hay peliculas disponibles</p>
+      {% endfor %}
+    </tbody>
+  </table>
+    
+
+        </div>
+        <div class="bg-green-200 p-4 rounded-lg">
+            <h2 class="text-lg font-semibold text-green-800">Sección 2</h2>
+            <p class="mt-2 text-gray-600">Contenido de la sección 2.</p>
+        </div>
+    </div>
 </body>
 </html>
