@@ -74,17 +74,17 @@ WSGI_APPLICATION = 'vidly.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'login_db',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',  # O la dirección IP de tu servidor MySQL
-        'PORT': '3306',       # El puerto MySQL por defecto es 3306
+        'HOST': 'localhost',
+        
     }
 }
-
 
 
 # Password validation
@@ -130,3 +130,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+#metodo para usar modelos personalizados

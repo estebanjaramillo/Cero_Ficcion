@@ -20,6 +20,10 @@
   /* 2 */
 }
 
+.animate-bounce {
+    animation: bounce 6s ;
+}
+
 ::before,
 ::after {
   --tw-content: '';
@@ -228,6 +232,7 @@ button,
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;
+  appearance: button;
   /* 1 */
   background-color: transparent;
   /* 2 */
@@ -275,6 +280,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 
 [type='search'] {
   -webkit-appearance: textfield;
+  appearance: textfield;
   /* 1 */
   outline-offset: -2px;
   /* 2 */
@@ -414,7 +420,9 @@ embed,
 object {
   display: block;
   /* 1 */
-  vertical-align: middle;
+  /* Removed vertical-align property since it is not necessary with display: block */
+  /* Removed vertical-align property since it is not necessary with display: block */
+  
   /* 2 */
 }
 

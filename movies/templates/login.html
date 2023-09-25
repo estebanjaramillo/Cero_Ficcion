@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Página de inicio de sesión</title>
+    <title>Iniciar sesión</title>
 </head>
 <body>
-  <h2>Iniciar sesion</h2>
-  <form action="/movies/login.php" method="POST">
-    <label for="usuario">Usuario:</label>
-    <input type="text" id="usuario" name="usuario" required><br><br>
-    
-    <label for="contraseña">Contrasena:</label>
-    <input type="password" id="contraseña" name="contraseña" required><br><br>
-    
-    <input type="submit" value="Iniciar sesion">
-  </form>
+    <h2>Iniciar sesión</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Iniciar sesión</button>
+    </form>
 </body>
 </html>
-

@@ -3,8 +3,12 @@ from .models import Movie
 
 def movie_list(request):
     movies = Movie.objects.all()  
-    return render(request, 'movie_list.html', {'movies': movies})
+    return render(request, 'index.html', {'movies': movies})
 
 def login(request):
     movies= Movie.objects.all()  
     return render(request, 'login.html', {'login': movies})
+
+    #logica para el login
+
+    
