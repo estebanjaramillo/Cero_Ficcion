@@ -132,3 +132,7 @@ STATICFILES_DIRS = [
 ]
 
 #metodo para usar modelos personalizados
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
