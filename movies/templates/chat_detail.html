@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Foro: {{ forum.title }}</h1>
+  
+  <div class="chat-box">
+    {% for chat in chats %}
+      <p><strong>{{ chat.sender.username }}:</strong> {{ chat.text }}</p>
+    {% endfor %}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="text">Nuevo mensaje:</label>
+    <textarea id="text" name="text" required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+  
+  <a href="{% url 'forum_list' %}">Volver a la lista de foros</a>
+{% endblock %}

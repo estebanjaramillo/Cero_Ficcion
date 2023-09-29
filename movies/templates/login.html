@@ -1,14 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Iniciar sesión</title>
 </head>
 <body>
-    <h2>Iniciar sesión</h2>
-    <form method="post">
+    <h1>Iniciar sesión</h1>
+    <form id="login-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Iniciar sesión</button>
+        <input type="submit" value="Iniciar sesión">
     </form>
+    <div id="error-message" style="color: red;"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#login-form').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "login" %}',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+                            // Redirigir al usuario a la página de inicio
+                            window.location.href = '/';  // Cambia esto según tus necesidades
+                        } else {
+                            $('#error-message').text(data.error_message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

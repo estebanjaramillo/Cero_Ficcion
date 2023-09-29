@@ -13,12 +13,21 @@
 <body>
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
     <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
-        <a href="#" class="flex items-center">
+        <a href="/" class="flex items-center">
             <img src="https://i.postimg.cc/4NYJkXsT/icono.jpg"  class="h-11 mr-3" alt="Flowbite Logo" />
             <span class="self-center text-2xl font-semibold whitespace-nowrap text-cyan-700  dark:text-white">Cero Ficcion</span>
         </a>
         <div class="flex items-center">
-            <a href="login/" class="font-semibold text-blue-600 dark:text-blue-500 text-2x1 hover:underline">Login</a>
+        <button id="dropdownNavbarLink_1" data-dropdown-toggle="dropdownNavbar1" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0 font-medium flex items-center justify-between w-full md:w-auto">Inicia sesion<svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
+                <div id="dropdownNavbar1" class="hidden bg-white text-base z-10 list-none divide-y divide-gray-100 rounded shadow my-4 w-44">
+                    <ul class="py-1" aria-labelledby="dropdownLargeButton">
+                    <li>
+                        <a href="admin/" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">Administrador</a>
+                    </li>
+                    <li>
+                        <a href="login_view/" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2" >Alumno</a> </li>
+                    </div>
+                </div>
         </div>
     </div>
 </nav>
@@ -27,13 +36,13 @@
         <div class="flex items-center bg-gray-200 p-4 rounded-lg">
             <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
                 <li>
-                    <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
+                    <a href="/" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
                 </li>
                 <li>
                     <a href="#" class="text-gray-900 dark:text-white hover:underline">Aulas</a>
                 </li>
                 <li>
-                    <a href="#" class="text-gray-900 dark:text-white hover:underline">Foros</a>
+                    <a href="forums" class="text-gray-900 dark:text-white hover:underline">Foros</a>
                 </li>
                 <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0 font-medium flex items-center justify-between w-full md:w-auto">Ayuda<svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
                 <div id="dropdownNavbar" class="hidden bg-white text-base z-10 list-none divide-y divide-gray-100 rounded shadow my-4 w-44">
@@ -62,6 +71,7 @@
             </p>
             
         </div>
+        
         <div class="bg-green-100 p-4 rounded-lg">
             <h2 class="text-lg font-semibold text-green-800" id="Mision">Mision</h2>
             <p class="mt-2 text-gray-600">Posicionar el documental como una herramienta de investigacion y creacion alternativa de 
@@ -79,6 +89,7 @@
         <div class="flex items-center justify-center" >
                 <iframe width="720" height="468" src="https://www.youtube.com/embed/erbZiaKwoaA?si=u_b2k1YWDJZzeOUM" title="video del cortometraje" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="justify-center inset-24 align-top "></iframe>
         </div>
+    </br>
         <p class="mt-2 text-gray-600">Este documental etnográfico explora el fenómeno del éxodo venezolano en Medellín a
              través de entrevistas reflexivas con personas que han llegado de Venezuela. Los personajes principales se 
              ganan la vida de diferentes maneras, desde vender comida callejera hasta preparar y vender café. A lo largo 
