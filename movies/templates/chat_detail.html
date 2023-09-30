@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Foro: {{ forum.title }}</h1>
+   <div class="bg-green-100 rounded-lg p-4 shadow-md  ">
+<h1 class="text-2xl font-bold mb-4 text-green-800">Foro: {{ forum.title }}</h1>
   
-  <div class="chat-box">
+  <div class="bg-green-300 rounded-lg p-4 shadow-md  ">
     {% for chat in chats %}
-      <p><strong>{{ chat.sender.username }}:</strong> {{ chat.text }}</p>
+      <p class="mb-2"><strong>{{ chat.sender.username }}:</strong> {{ chat.text }}</p>
     {% endfor %}
   </div>
 
-  <form method="post">
+  <form method="post" class="mt-4">
     {% csrf_token %}
-    <label for="text">Nuevo mensaje:</label>
-    <textarea id="text" name="text" required></textarea>
-    <button type="submit">Enviar</button>
+    <label for="text" class="block font-semibold mb-2 text-green-800 ">Nuevo mensaje:</label>
+    <textarea id="text" name="text" required class="w-full px-3 py-2 rounded-md border focus:outline-none focus:ring focus:border-blue-300 bg-gray-100"></textarea>
+    <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">Enviar</button>
   </form>
   
-  <a href="{% url 'forum_list' %}">Volver a la lista de foros</a>
+  <a href="{% url 'forum_list' %}" class="block mt-4 font-semibold text-blue-500 hover:underline">Volver a la lista de foros</a>
+  </div>
 {% endblock %}
