@@ -36,7 +36,6 @@ class Chat(models.Model):
 
 class Meta:
         permissions = [
-            ("can_add_movie", "Can add movie"),
             ("can_add_usuario", "Can add usuario"),
             ("can_add_forum", "Can add forum"),
             ("can_add_chat", "Can add chat"),

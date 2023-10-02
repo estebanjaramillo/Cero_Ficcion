@@ -1,14 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Movie, Forum, Chat
-from django.http import JsonResponse
-from django.contrib.auth import authenticate, login
-from .forms import LoginForm
 from .forms import ChatForm
-from django.contrib.auth.decorators import login_required  # Importa el decorador de autenticación
-
-
-
-
+from django.contrib.auth.models import User, auth
+from django.contrib.auth import logout
 
 def movie_list(request):
     movies = Movie.objects.all()  
@@ -22,25 +16,36 @@ def base(request):
     movies= Movie.objects.all()  
     return render(request, 'base.html', {'base': movies})
     
-#logica de login
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return JsonResponse({'success': True})
-            else:
-                return JsonResponse({'success': False, 'error_message': 'Credenciales inválidas'})
-        else:
-            return JsonResponse({'success': False, 'error_message': 'Formulario inválido'})
-    else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
 
+#logica de login
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        User.objects.create_user(username=username, password=password)
+        return redirect('login')
+    return render(request, 'register.html')
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect('/')
+        else:
+            # Handle invalid login
+            pass
+    return render(request, 'login.html')
+
+
+#logica de logout
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirige a la página de inicio de sesión
 #definicion de vistas del foro
 
 def forum_list(request):

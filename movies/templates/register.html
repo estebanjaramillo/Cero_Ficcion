@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Registro</title>
     <!-- Agrega enlaces a las hojas de estilo de Tailwind CSS aquí -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white p-8 rounded shadow-md w-96">
-            <h2 class="text-2xl font-semibold mb-4">Iniciar Sesión</h2>
+            <h2 class="text-2xl font-semibold mb-4">Registro</h2>
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-4">
@@ -21,16 +21,10 @@
                     <label for="password" class="block">Contraseña:</label>
                     <input type="password" name="password" id="password" class="border p-2 w-full">
                 </div>
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Iniciar Sesión</button>
-                <a href="/register" class=" text-gray-600 hover:text-blue-600  font-semibold mb-4">¿No tienes cuenta?</a>
+                <button type="submit" class=" bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Registrar</button>
+                <a href="/login" class=" text-gray-600 hover:text-blue-600  font-semibold mb-4">¿Ya tienes cuenta?</a>
             </form>
         </div>
     </div>
-{% if user.is_authenticated %}
-    <script>
-        window.location.href = "/";  // Redirigir a la página de inicio si está autenticado
-    </script>
-{% endif %}
- </body>
+</body>
 </html>
-

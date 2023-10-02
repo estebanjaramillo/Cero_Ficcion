@@ -136,3 +136,9 @@ STATICFILES_DIRS = [
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
