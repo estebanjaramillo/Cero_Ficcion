@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Logica para dividir el contenido por roles -->
+
+<div class="bg-yellow-100 p-4 rounded-lg shadow-lg max-w-screen-md mx-auto">
+    <h1 class="text-lg font-bold text-yellow-800 text-center mb-4">LISTA DE ESTUDIANTES en {{ aula.nombre }}</h1>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full table-fixed border-collapse ">
+            <thead>
+                <tr class="bg-yellow-50">
+                    <th class="px-4 py-2 text-left font-bold ">Estudiante</th>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <th class="px-4 py-2 text-left font-bold">Tomar Asistencia</th>
+                    <th class="px-4 py-2 text-left font-bold">Registrar Calificación</th>
+                    {% endif %}
+                    <th class="px-4 py-2 text-left font-semibold">Ver Notas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for estudiante in estudiantes %}
+                    <tr>
+                        <td class="px-4 py-2 font-semibold">{{ estudiante.nombre }}</td>
+                        {% if user.is_authenticated and user.is_staff %}
+                        <td class="px-4 py-2 font-semibold"><a href="{% url 'tomar_asistencia' estudiante_id=estudiante.id %}" class="text-blue-500 hover:underline">Tomar Asistencia</a></td>
+                        <td class="px-4 py-2 font-semibold"><a href="{% url 'registrar_calificacion' estudiante_id=estudiante.id %}" class="text-blue-500 hover:underline">Registrar Calificación</a></td>
+                        {% endif %}
+                        <td class="px-4 py-2 font-semibold"><a href="{% url 'notas_estudiante_por_aula' aula_id=aula.id estudiante_id=estudiante.id %}" class="text-blue-500 hover:underline">Ver Notas</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

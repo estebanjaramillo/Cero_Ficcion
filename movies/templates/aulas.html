@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <div class="bg-yellow-100 p-4 rounded-lg" >
+        <h1 class="text-lg font-bold text-yellow-800 text-center" id="Mision"> Lista Aulas</h1>
+    </br>
+        <div class="flex items-center justify-center" >
+          <ul  class="mt-2 text-gray-600 font-semibold">
+            {% for aula in aulas %}
+            <li><a href="{% url 'lista_estudiantes' aula.id %}">{{ aula.nombre }}</a></li>
+            {% endfor %}
+  </ul>
+      </br>
+    </div>
+</div>
+  
+{% endblock %}

@@ -82,7 +82,6 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-        
     }
 }
 

@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="esp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Cero Ficcion</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+<div class="bg-white p-4 rounded-lg shadow-lg mx-auto mt-8 max-w-2xl">
+    <h1 class="text-3xl font-semibold text-center my-4">Notas de {{ estudiante.nombre }}</h1>
+    <div class="mx-auto">
+        <table class="table-auto w-full">
+            <thead>
+                <tr class="bg-blue-200">
+                    <th class="px-4 py-2 text-left">Materia</th>
+                    <th class="px-4 py-2 text-left">Nota</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for calificacion in calificaciones %}
+                    <tr>
+                        <td class="px-4 py-2">{{ calificacion.materia }}</td>
+                        <td class="{% if calificacion.nota < 3 %}bg-red-500 text-white{% elif calificacion.nota < 4 %}bg-yellow-500{% else %}bg-green-500 text-white{% endif %} px-4 py-2">
+                            {{ calificacion.nota }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
-from .models import Movie, Forum, Chat
+from django.shortcuts import get_object_or_404, render, redirect
+from .models import Movie, Forum, Chat, Estudiante, Aula, Asistencia, Calificacion
 from .forms import ChatForm
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import logout
+from django.db.models import Avg
 
 def movie_list(request):
     movies = Movie.objects.all()  
@@ -68,3 +69,40 @@ def chat_detail(request, forum_id):
         form = ChatForm()
 
     return render(request, 'chat_detail.html', {'forum': forum, 'chats': chats, 'form': form})
+
+#definicion de vistas de asistencia y calificacion
+def lista_aulas(request):
+    aulas = Aula.objects.all()
+    return render(request, 'aulas.html', {'aulas': aulas})
+
+def lista_estudiantes(request, aula_id):
+    aula = Aula.objects.get(pk=aula_id)
+    estudiantes = Estudiante.objects.filter(aula=aula)
+    return render(request, 'estudiantes.html', {'aula': aula, 'estudiantes': estudiantes})
+
+def tomar_asistencia(request, estudiante_id):
+    estudiante = Estudiante.objects.get(pk=estudiante_id)
+    if request.method == 'POST':
+        fecha = request.POST['fecha']
+        presente = request.POST.get('presente', False)
+        Asistencia.objects.create(estudiante=estudiante, fecha=fecha, presente=presente)
+        return redirect('lista_estudiantes', aula_id=estudiante.aula.id)
+    return render(request, 'tomar_asistencia.html', {'estudiante': estudiante})
+
+def registrar_calificacion(request, estudiante_id):
+    estudiante = Estudiante.objects.get(pk=estudiante_id)
+    if request.method == 'POST':
+        materia = request.POST['materia']
+        nota = request.POST['nota']
+        Calificacion.objects.create(estudiante=estudiante, materia=materia, nota=nota)
+        return redirect('lista_estudiantes', aula_id=estudiante.aula.id)
+    return render(request, 'registrar_calificacion.html', {'estudiante': estudiante})
+
+#definicion de vista para ver las notas
+
+def notas_estudiante_por_aula(request, aula_id, estudiante_id):
+    aula = get_object_or_404(Aula, pk=aula_id)
+    estudiante = get_object_or_404(Estudiante, pk=estudiante_id, aula=aula)
+    calificaciones = Calificacion.objects.filter(estudiante=estudiante)
+    
+    return render(request, 'notas_estudiante_por_aula.html', {'aula': aula, 'estudiante': estudiante, 'calificaciones': calificaciones})

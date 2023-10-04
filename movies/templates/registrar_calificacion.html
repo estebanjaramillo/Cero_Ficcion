@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrar Calificación de {{ estudiante.nombre }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+        <h1 class="text-2xl font-semibold mb-4">Registrar Calificación de {{ estudiante.nombre }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="materia" class="block text-gray-600 font-bold">Materia:</label>
+                <input type="text" name="materia" required class="border rounded p-2 w-full focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="nota" class="block text-gray-600 font-bold">Nota:</label>
+                <input type="number" name="nota" step="0.01" required class="border rounded p-2 w-full focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue">Guardar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
