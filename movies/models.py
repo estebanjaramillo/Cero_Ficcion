@@ -73,7 +73,7 @@ class Calificacion(models.Model):
 
     def __str__(self):
         return f"{self.estudiante.nombre} - {self.materia}"
-
+##########################################################################################
     class Meta:
         permissions = [
             ("can_add_calificacion", "Can add calificacion"),
