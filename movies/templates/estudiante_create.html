@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="p-4 bg-yellow-100 rounded-md shadow-lg">
+        <h2 class="text-3xl font-extrabold text-yellow-600 mb-4">Crear un nuevo estudiante</h2>
+        <form method="post" class="animate__animated animate__fadeIn animate__delay-1s">
+            {% csrf_token %}
+            <div class="p-4 bg-white rounded-md shadow-md">
+                {{ form.as_p }}
+            </div>
+            <button class="mt-4 bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105" type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+{% endblock %}

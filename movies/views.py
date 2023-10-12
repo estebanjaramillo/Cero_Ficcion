@@ -3,11 +3,15 @@ from .models import Movie, Forum, Chat, Estudiante, Aula, Asistencia, Calificaci
 from .forms import ChatForm
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import logout
-from django.db.models import Avg
+from .forms import ForumForm,AulaForm,EstudianteForm,AsistenciaForm
 
 def movie_list(request):
     movies = Movie.objects.all()  
     return render(request, 'index.html', {'movies': movies})
+
+def dashboard(request):
+    movies = Movie.objects.all()  
+    return render(request, 'dashboard.html', {'dashboard': movies})
 
 def login(request):
     movies= Movie.objects.all()  
@@ -71,6 +75,7 @@ def chat_detail(request, forum_id):
     return render(request, 'chat_detail.html', {'forum': forum, 'chats': chats, 'form': form})
 
 #definicion de vistas de asistencia y calificacion
+
 def lista_aulas(request):
     aulas = Aula.objects.all()
     return render(request, 'aulas.html', {'aulas': aulas})
@@ -106,3 +111,100 @@ def notas_estudiante_por_aula(request, aula_id, estudiante_id):
     calificaciones = Calificacion.objects.filter(estudiante=estudiante)
     
     return render(request, 'notas_estudiante_por_aula.html', {'aula': aula, 'estudiante': estudiante, 'calificaciones': calificaciones})
+
+
+#definicion de funciones de CRUD para el foro
+def forum_create(request):
+    if request.method == 'POST':
+        form = ForumForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('forum_list')
+    else:
+        form = ForumForm()
+    return render(request, 'forum_create.html', {'form': form})
+
+def forum_update(request, pk):
+    forum = get_object_or_404(Forum, pk=pk)
+    
+    if request.method == 'POST':
+        form = ForumForm(request.POST, instance=forum)
+        if form.is_valid():
+            form.save()
+            return redirect('forum_list')
+    else:
+        form = ForumForm(instance=forum)
+    
+    return render(request, 'forum_form.html', {'form': form})
+
+def forum_delete(request, pk):
+    forum = get_object_or_404(Forum, pk=pk)
+    if request.method == 'POST':
+        forum.delete()
+        return redirect('forum_list')
+    
+    return render(request, 'forum_confirm_delete.html', {'forum': forum})
+
+#definicion de funciones de CRUD para el Aulas
+def aula_create(request):
+    if request.method == 'POST':
+        form = AulaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/aulas')
+    else:
+        form = AulaForm()
+    return render(request, 'aula_create.html', {'form': form})
+
+def aula_update(request, pk):
+    aula = get_object_or_404(Aula, pk=pk)
+    
+    if request.method == 'POST':
+        form = AulaForm(request.POST, instance=aula)
+        if form.is_valid():
+            form.save()
+            return redirect('/aulas')
+    else:
+        form = AulaForm(instance=aula)
+    
+    return render(request, 'aula_form.html', {'form': form})
+
+def aula_delete(request, pk):
+    aula = get_object_or_404(Aula, pk=pk)
+    if request.method == 'POST':
+        aula.delete()
+        return redirect('/aulas')
+    
+    return render(request, 'aula_confirm_delete.html', {'aula': aula})
+
+#definicion de funciones de CRUD para el Estudiantes
+def estudiante_create(request):
+    if request.method == 'POST':
+        form = EstudianteForm(request.POST)
+        if form.is_valid():
+            estudiante = form.save()
+            return redirect('/aulas/'+str(estudiante.aula.id)+'/estudiantes/')
+    else:
+        form = EstudianteForm()
+    return render(request, 'estudiante_create.html', {'form': form})
+
+def estudiante_update(request, pk):
+    estudiante = get_object_or_404(Estudiante, pk=pk)
+    
+    if request.method == 'POST':
+        form = EstudianteForm(request.POST, instance=estudiante)
+        if form.is_valid():
+            form.save()
+            return redirect('/aulas/'+str(estudiante.aula.id)+'/estudiantes/')
+    else:
+        form = EstudianteForm(instance=estudiante)
+    
+    return render(request, 'estudiante_form.html', {'form': form})
+
+def estudiante_delete(request, pk):
+    estudiante = get_object_or_404(Estudiante, pk=pk)
+    if request.method == 'POST':
+        estudiante.delete()
+        return redirect('/aulas/'+str(estudiante.aula.id)+'/estudiantes/')
+    
+    return render(request, 'estudiante_confirm_delete.html', {'estudiante': estudiante})

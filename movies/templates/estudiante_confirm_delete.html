@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_staff %}
+    <div class="p-4 bg-red-100 rounded-lg shadow-md">
+        <h2 class="text-3xl font-extrabold text-red-600 mb-4">Eliminar Estudiante</h2>
+        <p class="text-gray-600 mb-4">¿Estás seguro de que deseas eliminar el estudiante "{{ estudiante.nombre }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button class="mt-4 bg-red-400 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105" type="submit">Eliminar</button>
+            <a class="mt-4 bg-red-400 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105" href="{% url 'aulas' %}">Cancelar</a>
+        </form>
+    </div>
+{% endif %}
+{% endblock %}

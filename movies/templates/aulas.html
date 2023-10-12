@@ -5,9 +5,17 @@
         <h1 class="text-lg font-bold text-yellow-800 text-center" id="Mision"> Lista Aulas</h1>
     </br>
         <div class="flex items-center justify-center" >
+          
           <ul  class="mt-2 text-gray-600 font-semibold">
+            {% if user.is_authenticated and user.is_staff %}
+            <a href="{% url 'aula_create' %}" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-600">Crear Aula</a>
+            {%endif%}
             {% for aula in aulas %}
-            <li><a href="{% url 'lista_estudiantes' aula.id %}">{{ aula.nombre }}</a></li>
+            <li><a href="{% url 'lista_estudiantes' aula.id %}">{{ aula.nombre }}</a>
+             {% if user.is_authenticated and user.is_staff %}<a href="{% url 'aula_update' aula.id %}" class="text-blue-500 hover:underline mr-2">Editar</a>
+        <a href="{% url 'aula_delete' aula.id %}" class="text-red-500 hover:underline">Eliminar</a>
+      {% endif %}
+            </li>
             {% endfor %}
   </ul>
       </br>

@@ -3,15 +3,21 @@
 {% block content %}
  <div class="bg-green-100 p-4 rounded-lg" >
         <h1 class="text-lg font-bold text-green-600 text-center" id="Mision"> Lista de Foros</h1>
-    </br>
+ </br>
         <div class="flex items-center justify-center" >
           <ul  class="mt-2 text-gray-600 font-semibold">
-    {% for forum in forums %}
-      <li><a href="{% url 'chat_detail' forum.id %}">{{ forum.title }}</a></li>
+           {% if user.is_authenticated and user.is_staff %}
+            <a href="{% url 'forum_create' %}" class="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">Crear Foro</a>
+            {%endif%}
+            {% for forum in forums %}
+     <li><a href="{% url 'chat_detail' forum.id %}">{{ forum.title }}</a>
+      {% if user.is_authenticated and user.is_staff %}<a href="{% url 'forum_update' forum.id %}" class="text-blue-500 hover:underline mr-2">Editar</a>
+        <a href="{% url 'forum_delete' forum.id %}" class="text-red-500 hover:underline">Eliminar</a>
+      {% endif %}
+     </li>
     {% endfor %}
   </ul>
       </br>
-      
         </div>
     </div>
   

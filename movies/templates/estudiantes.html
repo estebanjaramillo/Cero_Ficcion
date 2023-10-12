@@ -16,6 +16,9 @@
                     <th class="px-4 py-2 text-left font-bold">Registrar Calificación</th>
                     {% endif %}
                     <th class="px-4 py-2 text-left font-semibold">Ver Notas</th>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="{% url 'estudiante_create' %}" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-600">Crear estudiante</a>
+                        {%endif%}
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +30,10 @@
                         <td class="px-4 py-2 font-semibold"><a href="{% url 'registrar_calificacion' estudiante_id=estudiante.id %}" class="text-blue-500 hover:underline">Registrar Calificación</a></td>
                         {% endif %}
                         <td class="px-4 py-2 font-semibold"><a href="{% url 'notas_estudiante_por_aula' aula_id=aula.id estudiante_id=estudiante.id %}" class="text-blue-500 hover:underline">Ver Notas</a></td>
+                        {% if user.is_authenticated and user.is_staff %}
+                        <td><a href="{% url 'estudiante_update' estudiante.id %}" class="text-blue-500 hover:underline mr-2 font-semibold">Editar</a> </td>
+                        <td><a href="{% url 'estudiante_delete' estudiante.id %}" class="text-red-500 hover:underline font-semibold">Eliminar</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
