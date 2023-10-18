@@ -1,9 +1,11 @@
+from django.views.generic import ListView
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Movie, Forum, Chat, Estudiante, Aula, Asistencia, Calificacion
 from .forms import ChatForm
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import logout
 from .forms import ForumForm,AulaForm,EstudianteForm,AsistenciaForm
+
 
 def movie_list(request):
     movies = Movie.objects.all()  
@@ -94,6 +96,17 @@ def tomar_asistencia(request, estudiante_id):
         return redirect('lista_estudiantes', aula_id=estudiante.aula.id)
     return render(request, 'tomar_asistencia.html', {'estudiante': estudiante})
 
+
+
+def asistencia_estudiante(request, estudiante_id):
+    estudiante = Estudiante.objects.get(pk=estudiante_id)
+    asistencias = Asistencia.objects.filter(estudiante=estudiante)
+
+    return render(request, 'asistencia_estudiante.html', {
+        'estudiante': estudiante,
+        'asistencias': asistencias
+    })
+
 def registrar_calificacion(request, estudiante_id):
     estudiante = Estudiante.objects.get(pk=estudiante_id)
     if request.method == 'POST':
@@ -104,7 +117,6 @@ def registrar_calificacion(request, estudiante_id):
     return render(request, 'registrar_calificacion.html', {'estudiante': estudiante})
 
 #definicion de vista para ver las notas
-
 def notas_estudiante_por_aula(request, aula_id, estudiante_id):
     aula = get_object_or_404(Aula, pk=aula_id)
     estudiante = get_object_or_404(Estudiante, pk=estudiante_id, aula=aula)
@@ -208,3 +220,4 @@ def estudiante_delete(request, pk):
         return redirect('/aulas/'+str(estudiante.aula.id)+'/estudiantes/')
     
     return render(request, 'estudiante_confirm_delete.html', {'estudiante': estudiante})
+

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from .views import asistencia_estudiante
+
 
 
 urlpatterns = [
@@ -16,7 +18,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('aulas/', views.lista_aulas, name='aulas'),
     path('aulas/<int:aula_id>/estudiantes/<int:estudiante_id>/notas/', views.notas_estudiante_por_aula, name='notas_estudiante_por_aula'),
-    path('aulas/create/', views.aula_create, name='aula_create'),
+    path('estudiante/asistencia/<int:estudiante_id>/', asistencia_estudiante, name='asistencia-estudiante'),
+
     path('aulas/delete/<int:pk>/', views.aula_delete, name='aula_delete'),
     path('aulas/update/<int:pk>/', views.aula_update, name='aula_update'),
     path('aulas/<int:aula_id>/estudiantes/', views.lista_estudiantes, name='lista_estudiantes'),
@@ -24,6 +27,6 @@ urlpatterns = [
     path('estudiantes/<int:estudiante_id>/registrar_calificacion/', views.registrar_calificacion, name='registrar_calificacion'),
     path('estudiantes/create/', views.estudiante_create, name='estudiante_create'),
     path('estudiantes/delete/<int:pk>/', views.estudiante_delete, name='estudiante_delete'),
-    path('estudiantes/update/<int:pk>/', views.estudiante_update, name='estudiante_update')
+    path('estudiantes/update/<int:pk>/', views.estudiante_update, name='estudiante_update'),
     ]
 
