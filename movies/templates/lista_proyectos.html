@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Proyectos en {{ equipo.nombre }}</h2>
+  <ul>
+    {% for proyecto in proyectos %}
+      <li>
+        <a href="{% url 'lista_archivos' proyecto.id %}">{{ proyecto.nombre }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'lista_equipos' %}">Volver a la lista de equipos</a>
+{% endblock %}

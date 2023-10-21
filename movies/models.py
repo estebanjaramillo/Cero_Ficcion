@@ -77,3 +77,43 @@ class Calificacion(models.Model):
         permissions = [
             ("can_add_calificacion", "Can add calificacion"),
         ]
+
+
+#Sistema de proyectos de clase
+
+class Equipo(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+    class Meta:
+        permissions = [
+            ("can_add_equipo", "Can add equipo"),
+        ]
+
+
+class Proyecto(models.Model):
+    nombre = models.CharField(max_length=100)
+    equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.equipo.nombre}"
+    class Meta:
+        permissions = [
+            ("can_add_Proyecto", "Can add Proyecto"),
+        ]
+
+class Archivo(models.Model):
+    nombre = models.CharField(max_length=255)
+    archivo = models.FileField(upload_to='archivos/')
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha_subida = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nombre} - {self.archivo.url}"  # Acceder al atributo 'url' del FieldFile
+
+    class Meta:
+        permissions = [
+            ("can_add_archivo", "Can add archivo"),
+        ]

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Cargar Archivo</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Cargar Archivo</button>
+  </form>
+  <a href="{% url 'lista_proyectos' proyecto.id %}">Volver a la lista de proyectos</a>
+{% endblock %}

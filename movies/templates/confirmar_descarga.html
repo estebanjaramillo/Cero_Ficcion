@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Confirmar Descarga</h2>
+  <p>¿Estás seguro de que deseas descargar el archivo "{{ archivo.nombre }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Descargar</button>
+  </form>
+  <a href="{% url 'lista_archivos' archivo.proyecto.id %}">Cancelar</a>
+{% endblock %}

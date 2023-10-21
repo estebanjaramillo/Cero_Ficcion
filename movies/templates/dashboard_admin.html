@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Panel de Administracion</title>
+</head>
+<body class="bg-gray-200 font-sans">
+    <!-- Barra de navegación -->
+    <div class="bg-blue-600 p-4 text-white">
+        <h1 class="text-2xl">Panel de Administración</h1>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container mx-auto mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Tarjeta 1 -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-lg font-semibold">Usuarios Registrados</h2>
+                <!-- Contador de usuarios -->
+                <p class="text-4xl font-bold text-blue-600 mt-2" id="userCount">{{ num_users }}</p>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-lg font-semibold">Numero de proyectos creados </h2>
+            <p class="text-4xl font-bold text-green-600 mt-2">10</p>
+            </div>
+
+            <!-- Tarjeta 3 -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-lg font-semibold ">Actividad Reciente</h2>
+                <ul class="mt-2">
+                    <div class="mb-1 bg-blue-300 rounded-lg ">
+                    <li class="text-center font-bold" >Ultimo usuario registrado</li>
+                    {% if last_user %}
+                    <li class="font-semibold text-blue-600 text-center">{{ last_user.username }}</li>
+                    {% else %}
+                    <li class="font-semibold text-red-600 text-center">No se ha creado usuarios</li>
+                    {% endif %}
+                    </div>
+                    <div class="mb-1 bg-green-300 rounded-lg ">
+                    <li class="mb-1 text-center font-bold">Usuarios Registrados en el ultimo dia</li>
+                       {% if users_last_day %}
+                <li class="font-semibold text-green-600 text-center">{{ users_last_day.count }}</li>
+                {% else %}
+                <li class="font-semibold text-blue-600 text-center">No hay usuarios registrados en el último día</li>
+                {% endif %}
+                </div>
+                    <div class="bg-red-300 p-4 rounded-lg shadow">
+                         <li class="mb-1 text-center font-bold ">Usuarios registrados el ultimo año</li>
+                        {% if users_last_year %}
+                        <p class="font-semibold text-red-600 text-center">{{ users_last_year.count }}</p>
+                        {% else %}
+                        <p class="font-semibold text-blue-600 text-center">No hay usuarios registrados en el último año</p>
+                        {% endif %}
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+<div class="bg-white mt-8 p-4 rounded-lg shadow">
+    <h2 class="text-lg font-semibold">Gráfico de Usuarios Registrados en el Último Año</h2>
+    <canvas id="usersChart1" width="400" height="200"></canvas>
+</div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtener el contexto del lienzo para el gráfico
+        var ctx = document.getElementById("usersChart1").getContext("2d");
+
+        // Datos para el gráfico
+        var data = {
+            labels: ["Último Año"],
+            datasets: [
+                {
+                    label: "Usuarios Registrados",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1,
+                    data: [{{ users_last_year.count }}],
+                },
+            ],
+        };
+
+        // Opciones del gráfico
+        var options = {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        };
+
+        // Crear el gráfico
+        var myChart = new Chart(ctx, {
+            type: "bar",
+            data: data,
+            options: options,
+        });
+    });
+</script>
+</body>
+</html>

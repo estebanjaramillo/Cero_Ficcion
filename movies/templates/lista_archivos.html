@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Archivos en {{ proyecto.nombre }}</h2>
+  <ul>
+    {% for archivo in archivos %}
+      <li>
+        <a href="{% url 'descargar_archivo' archivo.id %}">{{ archivo.nombre }}</a>
+        <a href="{% url 'confirmar_descarga' archivo.id %}" class="confirmar-descarga-link">Descargar</a>
+      </li>
+    {% empty %}
+      <li>No hay archivos en este proyecto.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'cargar_archivo' proyecto.id %}">Cargar archivo</a>
+  <a href="{% url 'lista_proyectos' equipo.id %}">Volver a la lista de proyectos</a>
+{% endblock %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const confirmarDescargaLinks = document.querySelectorAll('.confirmar-descarga-link');
+    confirmarDescargaLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const confirmacion = confirm("¿Estás seguro de que deseas descargar este archivo?");
+        if (confirmacion) {
+          window.location = link.getAttribute('href');
+        }
+      });
+    });
+  });
+</script>

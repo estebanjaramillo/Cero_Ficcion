@@ -1,12 +1,13 @@
 from django.urls import path
 from . import views
-from .views import asistencia_estudiante
+from .views import  asistencia_estudiante
 
 
 
 urlpatterns = [
     path('', views.movie_list, name='movie_list'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard_admin/', views.dashboard_admin, name='dashboard_admin'),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('base/', views.base, name='base'),
@@ -19,7 +20,6 @@ urlpatterns = [
     path('aulas/', views.lista_aulas, name='aulas'),
     path('aulas/<int:aula_id>/estudiantes/<int:estudiante_id>/notas/', views.notas_estudiante_por_aula, name='notas_estudiante_por_aula'),
     path('estudiante/asistencia/<int:estudiante_id>/', asistencia_estudiante, name='asistencia-estudiante'),
-
     path('aulas/delete/<int:pk>/', views.aula_delete, name='aula_delete'),
     path('aulas/update/<int:pk>/', views.aula_update, name='aula_update'),
     path('aulas/<int:aula_id>/estudiantes/', views.lista_estudiantes, name='lista_estudiantes'),
@@ -28,5 +28,13 @@ urlpatterns = [
     path('estudiantes/create/', views.estudiante_create, name='estudiante_create'),
     path('estudiantes/delete/<int:pk>/', views.estudiante_delete, name='estudiante_delete'),
     path('estudiantes/update/<int:pk>/', views.estudiante_update, name='estudiante_update'),
+    path('equipos/', views.lista_equipos, name='lista_equipos'),
+    path('proyectos/<int:equipo_id>/', views.lista_proyectos, name='lista_proyectos'),
+    path('archivos/<int:proyecto_id>/', views.lista_archivos, name='lista_archivos'),
+    path('cargar_archivo/<int:proyecto_id>/', views.cargar_archivo, name='cargar_archivo'),
+    path('descargar_archivo/<int:archivo_id>/', views.descargar_archivo, name='descargar_archivo'),
+    path('descargar_confirmado/<int:archivo_id>/', views.descargar_confirmado, name='confirmar_descarga'),
+
     ]
+
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Chat, Forum, Aula,Estudiante,Asistencia
+from .models import Chat, Forum, Aula,Estudiante,Asistencia,Archivo,Proyecto,Equipo
 from django import forms
 
 class ForumForm(forms.ModelForm):
@@ -29,6 +29,19 @@ class AsistenciaForm(forms.ModelForm):
         fields = '__all__'
         
 
+class ArchivoForm(forms.ModelForm):
+    class Meta:
+        model = Archivo
+        fields = ['nombre', 'archivo']
+        
+class ProyectoForm(forms.ModelForm):
+    class Meta:
+        model = Proyecto
+        fields = ['nombre', 'equipo']
 
 
+class EquipoForm(forms.ModelForm):
+    class Meta:
+        model = Equipo
+        fields = ['nombre']
 

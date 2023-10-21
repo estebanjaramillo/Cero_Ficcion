@@ -29,11 +29,15 @@
                     <ul class="py-1" aria-labelledby="dropdownLargeButton">
                    {% if user.is_authenticated and user.is_staff %} 
                    <li>
-                        <a href="admin/" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">Administrador</a>
+                        <a href="admin/" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">Administrador 1</a>
+                    <li><a href="/dashboard_admin" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">Administrador 2</a>
+                    </li>
                     {% endif %}
                     </li>
+                    {% if user.is_authenticated and not user.is_staff%} 
                     <li>
-                        <a href="login/" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2" >Alumno</a> </li>
+                        <a href="login/" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2" >alumno</a> </li>
+                    {% endif %}
                     </div>
                 </div>
         </div>
@@ -49,6 +53,9 @@
                 {% if user.is_authenticated %}
                 <li>
                     <a href="aulas/" class="text-gray-900 dark:text-white hover:underline">Aulas</a>
+                </li>
+                <li>
+                    <a href="/equipos" class="text-gray-900 dark:text-white hover:underline" >Proyectos</a>
                 </li>
                 <li>
                     <a href="forums" class="text-gray-900 dark:text-white hover:underline">Foros</a>

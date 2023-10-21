@@ -1,16 +1,59 @@
-from django.views.generic import ListView
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Movie, Forum, Chat, Estudiante, Aula, Asistencia, Calificacion
-from .forms import ChatForm
+from .models import Movie, Forum, Chat, Estudiante, Aula, Asistencia, Calificacion, Proyecto, Equipo, Archivo
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import logout
-from .forms import ForumForm,AulaForm,EstudianteForm,AsistenciaForm
+from django.contrib import messages
+from .forms import ForumForm,AulaForm,EstudianteForm,ArchivoForm,ChatForm
+from django.shortcuts import render
+from django.utils import timezone
+from datetime import timedelta, datetime
+from django.conf import settings
+import os
 
 
 def movie_list(request):
     movies = Movie.objects.all()  
     return render(request, 'index.html', {'movies': movies})
 
+# Obtener el número de usuarios registrados y el utlimo usuario registrado
+
+def get_last_registered_user():
+    try:
+        last_user = User.objects.latest('date_joined')
+        return last_user
+    except User.DoesNotExist:
+        return None
+
+
+def get_users_registered_last_day():
+    # Obtener la fecha actual y la fecha de hace un día
+    today = datetime.now()
+    one_day_ago = today - timedelta(days=1)
+    
+    # Consultar los usuarios registrados en el último día
+    users_last_day = User.objects.filter(date_joined__gte=one_day_ago, date_joined__lte=today)
+    return users_last_day
+
+def get_users_registered_last_year():
+    now = timezone.now()
+    one_year_ago = now - timedelta(days=365)
+    users_last_year = User.objects.filter(date_joined__gte=one_year_ago, date_joined__lt=now)
+    return users_last_year
+
+def dashboard_admin(request):
+    num_users = User.objects.count()
+    last_user = get_last_registered_user()
+    users_last_day = get_users_registered_last_day()
+    users_last_year = get_users_registered_last_year()
+
+    return render(request, 'dashboard_admin.html', {'num_users': num_users,
+                                                    'last_user': last_user,
+                                                    'users_last_day': users_last_day,
+                                                        'users_last_year': users_last_year,})
+
+
+#vista para ir al chat por foros y login
 def dashboard(request):
     movies = Movie.objects.all()  
     return render(request, 'dashboard.html', {'dashboard': movies})
@@ -19,6 +62,7 @@ def login(request):
     movies= Movie.objects.all()  
     return render(request, 'login.html', {'login': movies})
 
+#vista de la base de los templates
 def base(request):
     movies= Movie.objects.all()  
     return render(request, 'base.html', {'base': movies})
@@ -221,3 +265,64 @@ def estudiante_delete(request, pk):
     
     return render(request, 'estudiante_confirm_delete.html', {'estudiante': estudiante})
 
+#Sistema de proyectos de clase
+
+
+def lista_equipos(request):
+    equipos = Equipo.objects.all()
+    return render(request, 'lista_equipos.html', {'equipos': equipos})
+
+
+def lista_proyectos(request, equipo_id):
+    equipo = get_object_or_404(Equipo, id=equipo_id)
+    proyectos = Proyecto.objects.filter(equipo=equipo)
+    return render(request, 'lista_proyectos.html', {'equipo': equipo, 'proyectos': proyectos})
+
+def lista_archivos(request, proyecto_id):
+    proyecto = get_object_or_404(Proyecto, id=proyecto_id)
+    archivos = Archivo.objects.filter(proyecto=proyecto)
+    equipo = proyecto.equipo  # Asegúrate de que proyecto tenga una relación con un equipo
+    return render(request, 'lista_archivos.html', {'proyecto': proyecto, 'archivos': archivos, 'equipo': equipo})
+
+
+def cargar_archivo(request, proyecto_id):
+    # Obtén el objeto Proyecto asociado al proyecto_id
+    proyecto = Proyecto.objects.get(pk=proyecto_id)
+    
+    if request.method == "POST":
+        form = ArchivoForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Asigna el proyecto al archivo antes de guardarlo
+            archivo = form.save(commit=False)
+            archivo.proyecto = proyecto
+            archivo.uploader = request.user
+            archivo.save()
+            return redirect('lista_archivos', proyecto_id=proyecto_id)
+    else:
+        form = ArchivoForm()
+
+    return render(request, 'cargar_archivo.html', {'form': form, 'proyecto': proyecto})
+
+def descargar_archivo(request, archivo_id):
+    archivo = get_object_or_404(Archivo, id=archivo_id)
+    file_path = archivo.archivo.path
+    file_name = archivo.nombre
+
+    # Agregar un mensaje de alerta
+    messages.warning(request, f"¿Estás seguro de que deseas descargar '{file_name}'?")
+
+    # Preparar la respuesta para la descarga
+    response = FileResponse(open(file_path, 'rb'))
+    response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+    return response
+
+
+def descargar_confirmado(request, archivo_id):
+    archivo = get_object_or_404(Archivo, pk=archivo_id)
+
+    if request.method == "POST":
+        file_path = os.path.join(settings.MEDIA_ROOT, str(archivo.archivo))
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True)
+        return response
+
+    return render(request, 'confirmar_descarga.html', {'archivo': archivo})
