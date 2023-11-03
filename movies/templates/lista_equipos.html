@@ -1,13 +1,25 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-  <h2>Equipos</h2>
-  <ul>
-    {% for equipo in equipos %}
-      <li>
-        <a href="{% url 'lista_proyectos' equipo.id %}">{{ equipo.nombre }}</a>
-      </li>
-    {% endfor %}
+ <div class="bg-purple-200 p-4 rounded-lg" >
+        <h1 class="text-lg font-bold text-purple-800 text-center" > Lista de equipos</h1>
+    </br>
+        <div class="flex items-center justify-center" >
+          
+          <ul  class="mt-2 text-gray-600 font-semibold">
+            {% if user.is_authenticated and user.is_staff %}
+            <a  href="{% url 'crear_equipo' %}" class="bg-purple-500 text-white py-1 px-2 rounded hover:bg-purple-600">Crear equipo</a>
+            {%endif%}
+            {% for equipo in equipos %}
+            <li><a href="{% url 'lista_proyectos' equipo.id %}">{{ equipo.nombre }}</a>
+                <td><a href="{% url 'actualizar_equipo' equipo.id %}" class="text-blue-500 hover:underline mr-2 font-semibold">Editar</a> </td>
+                <td><a href="{% url 'eliminar_equipo' equipo.id %}" class="text-red-500 hover:underline font-semibold">Eliminar</a></td>
+            </li>
+            {% endfor %}
   </ul>
+      </br>
+    </div>
+</div>
+  
 {% endblock %}
 

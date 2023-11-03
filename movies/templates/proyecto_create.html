@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-purple-200 p-4 rounded-lg">
+    <h1 class="text-lg font-bold text-purple-800 text-center">Crear Proyecto</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-purple-500 text-white py-1 px-2 rounded hover:bg-purple-600">Guardar Proyecto</button>
+    </form>
+</div>
+{% endblock %}

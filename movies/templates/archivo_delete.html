@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-purple-200 p-4 rounded-lg shadow-lg max-w-screen-md mx-auto">
+    <h1 class="text-lg font-bold text-purple-800 text-center">Eliminar Archivo</h1>
+    <br>
+    <p><strong>¿Estás seguro de que deseas eliminar este archivo?</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Eliminar Archivo</button>
+    </form>
+</div>
+{% endblock %}

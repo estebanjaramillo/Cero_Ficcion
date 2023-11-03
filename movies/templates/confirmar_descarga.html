@@ -1,11 +1,13 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-  <h2>Confirmar Descarga</h2>
-  <p>¿Estás seguro de que deseas descargar el archivo "{{ archivo.nombre }}"?</p>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Descargar</button>
-  </form>
-  <a href="{% url 'lista_archivos' archivo.proyecto.id %}">Cancelar</a>
+<div class="bg-purple-200 p-4 rounded-lg shadow-lg max-w-screen-md mx-auto">
+    <h1 class="text-lg font-bold text-purple-800 text-center">Confirmar Descarga</h1>
+    <p class="text-gray-600 mt-4">¿Estás seguro de que deseas descargar el archivo "{{ archivo.nombre }}"?</p>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition duration-300">Descargar</button>
+    </form>
+    <a href="{% url 'lista_archivos' archivo.proyecto.id %}" class="block mt-4 font-semibold text-purple-500 hover:underline">Cancelar</a>
+</div>
 {% endblock %}

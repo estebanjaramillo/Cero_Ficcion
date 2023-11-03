@@ -111,7 +111,7 @@ class Archivo(models.Model):
     fecha_subida = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.nombre} - {self.archivo.url}"  # Acceder al atributo 'url' del FieldFile
+        return f"{self.nombre} - {self.archivo.url}"
 
     class Meta:
         permissions = [

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-purple-200 p-4 rounded-lg">
+    <h1 class="text-lg font-bold text-purple-800 text-center">Eliminar Proyecto</h1>
+    <br>
+    <p><strong>¿Estás seguro de que deseas eliminar este proyecto?</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Eliminar Proyecto</button>
+    </form>
+</div>
+{% endblock %}

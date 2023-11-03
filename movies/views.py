@@ -1,10 +1,10 @@
-from django.http import FileResponse
+from django.http import FileResponse,Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Movie, Forum, Chat, Estudiante, Aula, Asistencia, Calificacion, Proyecto, Equipo, Archivo
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import logout
 from django.contrib import messages
-from .forms import ForumForm,AulaForm,EstudianteForm,ArchivoForm,ChatForm
+from .forms import ForumForm,AulaForm,EstudianteForm,ArchivoForm,ChatForm,EquipoForm,ProyectoForm
 from django.shortcuts import render
 from django.utils import timezone
 from datetime import timedelta, datetime
@@ -25,13 +25,15 @@ def get_last_registered_user():
     except User.DoesNotExist:
         return None
 
+def contar_proyectos(request):
+    numero_proyectos = Proyecto.objects.count()
+    
+    return numero_proyectos
 
 def get_users_registered_last_day():
-    # Obtener la fecha actual y la fecha de hace un día
     today = datetime.now()
     one_day_ago = today - timedelta(days=1)
     
-    # Consultar los usuarios registrados en el último día
     users_last_day = User.objects.filter(date_joined__gte=one_day_ago, date_joined__lte=today)
     return users_last_day
 
@@ -46,8 +48,11 @@ def dashboard_admin(request):
     last_user = get_last_registered_user()
     users_last_day = get_users_registered_last_day()
     users_last_year = get_users_registered_last_year()
+    numero_proyectos = contar_proyectos(request)
+
 
     return render(request, 'dashboard_admin.html', {'num_users': num_users,
+                                                    'numero_proyectos': numero_proyectos,
                                                     'last_user': last_user,
                                                     'users_last_day': users_last_day,
                                                         'users_last_year': users_last_year,})
@@ -278,6 +283,88 @@ def lista_proyectos(request, equipo_id):
     proyectos = Proyecto.objects.filter(equipo=equipo)
     return render(request, 'lista_proyectos.html', {'equipo': equipo, 'proyectos': proyectos})
 
+def proyecto_create(request, equipo_id):
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST)
+        if form.is_valid():
+            proyecto = form.save(commit=False)
+            proyecto.equipo_id = equipo_id  # Asigna el equipo_id al proyecto
+            proyecto.save()
+            return redirect('lista_proyectos', equipo_id=equipo_id)
+    else:
+        form = ProyectoForm()
+
+    return render(request, 'proyecto_create.html', {'form': form, 'equipo_id': equipo_id})
+
+def proyecto_update(request, pk):
+    proyecto = get_object_or_404(Proyecto, pk=pk)
+
+    if request.method == 'POST':
+        form = ProyectoForm(request.POST, instance=proyecto)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_proyectos', equipo_id=proyecto.equipo_id)
+    else:
+        form = ProyectoForm(instance=proyecto)
+
+    return render(request, 'proyecto_form.html', {'form': form, 'proyecto': proyecto})
+
+
+def proyecto_delete(request, pk):
+    proyecto = get_object_or_404(Proyecto, pk=pk)
+    equipo_id = proyecto.equipo_id  # Guarda el equipo_id antes de eliminar el proyecto
+
+    if request.method == 'POST':
+        proyecto.delete()
+        return redirect('lista_proyectos', equipo_id=equipo_id)
+
+    return render(request, 'proyecto_delete.html', {'proyecto': proyecto})
+
+def equipo_create(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('lista_equipos')
+
+    if request.method == 'POST':
+        form = EquipoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_equipos')
+    else:
+        form = EquipoForm()
+
+    return render(request, 'equipo_create.html', {'form': form})
+
+def actualizar_equipo(request, pk):
+    equipo = get_object_or_404(Equipo, pk=pk)
+
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('lista_equipos')
+
+    if request.method == 'POST':
+        form = EquipoForm(request.POST, instance=equipo)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_equipos')
+    else:
+        form = EquipoForm(instance=equipo)
+
+    return render(request, 'equipo_form.html', {'form': form, 'equipo': equipo})
+
+def eliminar_equipo(request, pk):
+    equipo = get_object_or_404(Equipo, pk=pk)
+
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('lista_equipos')
+
+    if request.method == 'POST':
+        equipo.delete()
+        return redirect('lista_equipos')
+
+    return render(request, 'equipo_confirm_delete.html', {'equipo': equipo})
+
+
+
+
 def lista_archivos(request, proyecto_id):
     proyecto = get_object_or_404(Proyecto, id=proyecto_id)
     archivos = Archivo.objects.filter(proyecto=proyecto)
@@ -326,3 +413,47 @@ def descargar_confirmado(request, archivo_id):
         return response
 
     return render(request, 'confirmar_descarga.html', {'archivo': archivo})
+
+
+def archivo_update(request, pk):
+    archivo = get_object_or_404(Archivo, pk=pk)
+    proyecto_id = archivo.proyecto_id
+
+    if request.method == 'POST':
+        # Obtener el archivo anterior antes de la actualización
+        archivo_anterior = archivo.archivo
+
+        # Actualizar el archivo con el nuevo archivo cargado por el usuario
+        form = ArchivoForm(request.POST, request.FILES, instance=archivo)
+        if form.is_valid():
+            archivo = form.save()
+
+            # Eliminar el archivo anterior de la carpeta de medios
+            if archivo_anterior and archivo.archivo != archivo_anterior:
+                file_path = os.path.join(settings.MEDIA_ROOT, str(archivo_anterior))
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+
+            return redirect('lista_archivos', proyecto_id=proyecto_id)
+
+    else:
+        form = ArchivoForm(instance=archivo)
+
+    return render(request, 'archivo_form.html', {'form': form, 'archivo': archivo})
+
+def archivo_delete(request, pk):
+    archivo = get_object_or_404(Archivo, pk=pk)
+    proyecto_id = archivo.proyecto_id
+
+    if request.method == 'POST':
+        # Eliminar el archivo de la base de datos
+        archivo.delete()
+
+        # Eliminar el archivo físico de la carpeta de archivos
+        file_path = os.path.join(settings.MEDIA_ROOT, str(archivo.archivo))
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        return redirect('lista_archivos', proyecto_id=proyecto_id)
+
+    return render(request, 'archivo_delete.html', {'archivo': archivo})

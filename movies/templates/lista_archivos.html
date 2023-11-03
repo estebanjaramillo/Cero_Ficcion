@@ -1,31 +1,36 @@
-{% extends "base.html" %}
+
+{% extends 'base.html' %}
 
 {% block content %}
-  <h2>Archivos en {{ proyecto.nombre }}</h2>
-  <ul>
-    {% for archivo in archivos %}
-      <li>
-        <a href="{% url 'descargar_archivo' archivo.id %}">{{ archivo.nombre }}</a>
-        <a href="{% url 'confirmar_descarga' archivo.id %}" class="confirmar-descarga-link">Descargar</a>
-      </li>
-    {% empty %}
+ <div class="bg-purple-200 p-4 rounded-lg shadow-lg max-w-screen-md mx-auto" >
+        <h1 class="text-lg font-bold text-purple-800 text-center" > Lista de archivos en el proyecto {{ proyecto.nombre }}</h1>
+    </br>
+        <div class="flex items-center justify-center" >
+          
+          <ul  class="mt-2 text-gray-600 font-semibold">
+            {% if user.is_authenticated and user.is_staff %}
+            </br>
+            {%endif%}
+          
+            {% for archivo in archivos %}
+             
+            <li><a>{{ archivo.nombre }}</a>
+            <a href="{% url 'confirmar_descarga' archivo.id %}" class=" text-purple-800 font-semibold hover:text-green-400 transition duration-300">Descargar</a>
+          <a href="{% url 'archivo_update' archivo.id %}" class="text-blue-500 hover:underline mr-2">Actualizar</a>
+<a href="{% url 'archivo_delete' archivo.id %}" class="text-red-500 hover:underline mr-2">Eliminar</a>  
+          </li>
+            {% empty %}
       <li>No hay archivos en este proyecto.</li>
-    {% endfor %}
+            {% endfor %}
   </ul>
-  <a href="{% url 'cargar_archivo' proyecto.id %}">Cargar archivo</a>
-  <a href="{% url 'lista_proyectos' equipo.id %}">Volver a la lista de proyectos</a>
+      </br>
+    </div>
+        <a  href="{% url 'cargar_archivo' proyecto.id %}"><button class="mt-2 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition duration-300">Cargar archivo</a></button>
+        <a href="{% url 'lista_proyectos' equipo.id %}" class="block mt-4 font-semibold text-purple-500 hover:underline">Volver a la lista de proyectos</a>
+
+</div>
+  
 {% endblock %}
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const confirmarDescargaLinks = document.querySelectorAll('.confirmar-descarga-link');
-    confirmarDescargaLinks.forEach(link => {
-      link.addEventListener('click', function(event) {
-        event.preventDefault();
-        const confirmacion = confirm("¿Estás seguro de que deseas descargar este archivo?");
-        if (confirmacion) {
-          window.location = link.getAttribute('href');
-        }
-      });
-    });
-  });
-</script>
+
+
+
