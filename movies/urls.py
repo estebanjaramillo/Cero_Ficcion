@@ -18,6 +18,7 @@ urlpatterns = [
     path('forums/<int:forum_id>/', views.chat_detail, name='chat_detail'),
     path('logout/', views.logout_view, name='logout'),
     path('aulas/', views.lista_aulas, name='aulas'),
+    path('aulas/create/', views.aula_create, name='aula_create'),
     path('aulas/<int:aula_id>/estudiantes/<int:estudiante_id>/notas/', views.notas_estudiante_por_aula, name='notas_estudiante_por_aula'),
     path('estudiante/asistencia/<int:estudiante_id>/', asistencia_estudiante, name='asistencia-estudiante'),
     path('aulas/delete/<int:pk>/', views.aula_delete, name='aula_delete'),

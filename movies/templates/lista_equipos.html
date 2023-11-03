@@ -12,9 +12,11 @@
             {%endif%}
             {% for equipo in equipos %}
             <li><a href="{% url 'lista_proyectos' equipo.id %}">{{ equipo.nombre }}</a>
+              {% if user.is_authenticated and user.is_staff %}
                 <td><a href="{% url 'actualizar_equipo' equipo.id %}" class="text-blue-500 hover:underline mr-2 font-semibold">Editar</a> </td>
                 <td><a href="{% url 'eliminar_equipo' equipo.id %}" class="text-red-500 hover:underline font-semibold">Eliminar</a></td>
-            </li>
+              {% endif %}
+              </li>
             {% endfor %}
   </ul>
       </br>
